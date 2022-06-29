@@ -14,6 +14,7 @@ import useMyToast from '../../hooks/useMyToast'
 import { reset, setCid } from '../../app/ipfsSlice'
 import isIpfs from 'is-ipfs'
 
+
 export default function IpfsInput() {
   const store = useSelector((state) => state.ipfsRedux)
   const toast = useMyToast()
@@ -52,7 +53,7 @@ export default function IpfsInput() {
             <Input
               h="7"
               rounded="xl"
-              fontWeight="black"
+              // fontWeight="black"
               onChange={handleInput}
               placeholder={store.cid || '<myCID>'}
               size="xs"

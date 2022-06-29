@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 import all from 'it-all'
 import { listObjects } from '../lib/s3Util'
+import qs from 'qs'
+
 
 export const bridgeApi = createApi({
   reducerPath: 'bridgeApi',
@@ -26,13 +28,11 @@ export const bridgeApi = createApi({
     getCid: build.query({
       async queryFn(args, _api, _extraOptions, fetch) {
         const { cid } = args
-        console.log('🚀 ~ file: bridgeApi.js ~ line 27 ~ queryFn ~ args', args)
+        // console.log('🚀 ~ file: bridgeApi.js ~ line 27 ~ queryFn ~ args', args)
         try {
           const ipfs = window?.ipfsDaemon
           let response = await ipfs.get(cid)
           const fileInfo = await all(response)
-          console.log('🚀 ~ file: bridgeApi.js ~ line 30 ~ queryFn ~ response', file)
-
           return { data: fileInfo }
         } catch (err) {
           console.log(err)
@@ -40,34 +40,60 @@ export const bridgeApi = createApi({
         }
       },
     }),
-    getBucketFiles: build.query({
-      async queryFn(args, _api, _extraOptions, fetch) {
-        const { bucket } = args
-        try {
-          const s3 = window?.s3
-          let response = await (await listObjects(s3, bucket)).json
-          console.log("🚀 ~ file: bridgeApi.js ~ line 49 ~ queryFn ~ response", response)
-          const fileInfo = await all(response.objects)
-
-          return { data: fileInfo }
-        } catch (e) {
-          console.err(e)
-          return { error: e }
-        }
+    getBuckets: build.query({
+      query: (args) => {
+        return `api/s3listBuckets`
       }
     }),
-    postFiles2Bucket: build.mutation({
-      // not sure about this
-      async queryFn(args, _api, _extraOptions, fetch) {
+    getBucketFiles: build.query({
+      query: (args) => {
+        const query = qs.stringify(args);
+        return `api/s3listBucketObject?${query}`
+      }
 
-        try {
-          return
-        } catch(e) {
-          return
+      // async queryFn(args, _api, _extraOptions, fetch) {
+      //   const { bucket } = args
+      //   try {
+      //     const s3 = window?.s3
+      //     let response = await (await listObjects(s3, bucket)).json
+      //     console.log("🚀 ~ file: bridgeApi.js ~ line 49 ~ queryFn ~ response", response)
+      //     const fileInfo = await all(response.objects)
+
+      //     return { data: fileInfo }
+      //   } catch (e) {
+      //     console.err(e)
+      //     return { error: e }
+      //   }
+      // }
+    }),
+    postFiles2Bucket: build.mutation({
+      query(body) {
+
+        return {
+          url: 's3deployObjects',
+          method: 'POST',
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: body,
         }
+      }
+      // async queryFn(args, _api, _extraOptions, fetch) {
+
+      //   try {
+      //     return
+      //   } catch(e) {
+      //     return
+      //   }
+      // }
+    }),
+    sayHiJon: build.query({
+      query: (args) => {
+        const query = qs.stringify(args);
+        return `api/hello`
       }
     })
   }),
 })
 
-export const { useLsCidQuery, useGetCidQuery, useLazyGetCidQuery } = bridgeApi
+export const { useLsCidQuery, useGetCidQuery, useLazyGetCidQuery, useGetBucketsQuery, useLazyGetBucketFilesQuery, usePostFiles2BucketMutation, } = bridgeApi

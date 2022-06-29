@@ -18,7 +18,6 @@ import { selectFile, unselectFile } from '../../app/ipfsSlice'
 import prettyBytes from 'pretty-bytes'
 
 export const IpfsCard = ({ ls, idx }) => {
-  console.log('🚀 ~ file: IpfsCard.js ~ line 21 ~ IpfsCard ~ ls', ls)
   const store = useSelector((state) => state.ipfsRedux)
   const dispatch = useDispatch()
   const toast = useMyToast()
@@ -26,7 +25,7 @@ export const IpfsCard = ({ ls, idx }) => {
 
   const attrs = ['name', 'size', 'type']
   const spacing = 1
-  const bg = useColorModeValue('bg-snow-muted font-bold', 'ring-1 ring-slate-900 bg-aqua-muted ')
+  const bg = useColorModeValue('bg-snow-muted', 'ring-1 ring-slate-900 bg-aqua-muted ')
 
   function onCardClick() {
     if (store.selectedIdx.includes(idx)) {
@@ -40,7 +39,8 @@ export const IpfsCard = ({ ls, idx }) => {
   useEffect(() => {
     if (result.isSuccess) {
       dispatch(selectFile({ idx, file: result.data }))
-    } else if (result.isError) {
+    } else if (result) {
+      console.log("🚀 ~ file: IpfsCard.js ~ line 43 ~ useEffect ~ result.isError", result.isError)
       toast('error', 'Failed to download file 😥', 'IpfsDownError')
     }
   }, [result, dispatch, ls, toast, idx])

@@ -74,3 +74,18 @@ CORSpolicy only concerns the incoming requests. There is no obvious way to have 
 That leaves us with the only option to go ServerSide, which also holds the benefit that it doesn't disclose the env variables to the browser.
 
 Instead of messing with CORS policy, we now try `getServerSideProps()` and as plan B set up a proxy-server API.
+
+### OVM S3
+
+Follow [these steps]() to init/test S3 on your VM.
+
+Get the local ip address of your OVM server:
+```bash
+hostname -I | awk '{print $1}'
+```
+
+Get the port to connect to:
+```bash
+kubectl describe svc cortx-server-loadbal-svc-cortx-ova-rgw -n cortx |grep NodePort:
+```
+

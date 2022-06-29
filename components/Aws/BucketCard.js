@@ -13,12 +13,21 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import prettyBytes from 'pretty-bytes'
 import { v4 as uuid } from 'uuid'
-import { selectBucket } from '../../app/cortxSlice'
+import { selectBucket, useLazyDeploy } from '../../app/cortxSlice'
+import { usePostFiles2BucketMutation } from '../../app/bridgeApi'
+
 
 export const BucketCard = ({ bucket, idx }) => {
   const store = useSelector((state) => state.cortx)
+  const ipfsStore = useSelector((state) => state.ipfs)
   const dispatch = useDispatch()
   const toast = useMyToast()
+  const [postFiles, result,] = usePostFiles2BucketMutation()
+
+  useEffect(() => {
+    // TODO: Logic to habdle upload success or error
+    console.log("Upload status: ", result)
+  })
 
   const attrs = ['size', 'files']
   const spacing = 1
@@ -27,6 +36,12 @@ export const BucketCard = ({ bucket, idx }) => {
   function onCardClick() {
     dispatch(selectBucket({ bucket }))
     toast('info', 'Uploading Files to ' + bucket, 'infoBucket')
+    // TODO: upload logic
+    // for (obj of ipfsStore.selectedFiles) {
+    //   // TODO: send in batches
+    //   postFiles({ objName: obj., objData, bucketName: store.selectedBucket })
+    //   await!result.isLoading
+    // })
   }
 
   const hoverStyle =
