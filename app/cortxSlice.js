@@ -43,6 +43,6 @@ export const cortxSlice = createSlice({
   },
 })
 
-export const { listBuckets, selectBucket, listFile, deployedFile } = cortxSlice.actions
+export const { listBuckets, selectBucket, listFile, deployedFile, reset } = cortxSlice.actions
 
 export default cortxSlice.reducer

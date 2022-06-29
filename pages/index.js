@@ -13,11 +13,19 @@ import useMyToast from '../hooks/useMyToast'
 import { createS3, listBucket } from '../lib/s3Util'
 import { CortxBuckets } from '../components/Aws/CortxBuckets'
 import { BezierSpinner } from '../components/Spinner/BezierSpinner'
+import { selectBucket, reset } from '../app/cortxSlice'
 
 export default function Home({ buckets }) {
   const store = useSelector((state) => state.ipfsRedux)
+  const dispatch = useDispatch()
   const cortxStore = useSelector((state) => state.cortx)
   const toast = useMyToast()
+
+  useEffect(() => {
+    if (cortxStore.selectedBucket) {
+      setTimeout(() => dispatch(reset()), 50_000)
+    }
+  })
 
   return (
     <>
