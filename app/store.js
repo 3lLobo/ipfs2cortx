@@ -19,7 +19,7 @@ export const store = configureStore({
     }).concat(bridgeApi.middleware),
 })
 
-// optional, but required for refetchOnFocus/refetchOnReconnect behaviors
+// optional, but required for refetchOnFocus/refetchOnReconnect beaviors
 // see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
 setupListeners(store.dispatch)
 enableMapSet()

@@ -48,23 +48,8 @@ export const bridgeApi = createApi({
     getBucketFiles: build.query({
       query: (args) => {
         const query = qs.stringify(args);
-        return `api/s3listBucketObject?${query}`
+        return `api/s3listObjects?${query}`
       }
-
-      // async queryFn(args, _api, _extraOptions, fetch) {
-      //   const { bucket } = args
-      //   try {
-      //     const s3 = window?.s3
-      //     let response = await (await listObjects(s3, bucket)).json
-      //     console.log("🚀 ~ file: bridgeApi.js ~ line 49 ~ queryFn ~ response", response)
-      //     const fileInfo = await all(response.objects)
-
-      //     return { data: fileInfo }
-      //   } catch (e) {
-      //     console.err(e)
-      //     return { error: e }
-      //   }
-      // }
     }),
     postFiles2Bucket: build.mutation({
       query(body) {
@@ -78,14 +63,6 @@ export const bridgeApi = createApi({
           body: body,
         }
       }
-      // async queryFn(args, _api, _extraOptions, fetch) {
-
-      //   try {
-      //     return
-      //   } catch(e) {
-      //     return
-      //   }
-      // }
     }),
     sayHiJon: build.query({
       query: (args) => {
@@ -96,4 +73,12 @@ export const bridgeApi = createApi({
   }),
 })
 
-export const { useLsCidQuery, useGetCidQuery, useLazyGetCidQuery, useGetBucketsQuery, useLazyGetBucketFilesQuery, usePostFiles2BucketMutation, } = bridgeApi
+export const { 
+  useLsCidQuery, 
+  useGetCidQuery, 
+  useLazyGetCidQuery, 
+  useGetBucketsQuery, 
+  useLazyGetBucketFilesQuery, 
+  usePostFiles2BucketMutation, 
+  useGetBucketFilesQuery, 
+} = bridgeApi

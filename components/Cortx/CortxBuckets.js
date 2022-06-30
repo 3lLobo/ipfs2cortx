@@ -49,7 +49,7 @@ export function CortxBuckets({ }) {
             : isLoading
               ? <BezierSpinner />
               : <div
-                className='mx-auto'
+                className='mx-auto' //  TODO:animate bounce'
               >
                 No Buckets ☠️
               </div>

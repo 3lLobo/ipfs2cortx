@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import useMyToast from '../../hooks/useMyToast'
 import { reset, setCid } from '../../app/ipfsReduxSlice'
 import isIpfs from 'is-ipfs'
+import { DopeAlter } from '../Alert/dopeAlert'
 
 
 export default function IpfsInput() {
@@ -35,9 +36,10 @@ export default function IpfsInput() {
     <>
       <Box className="m-3 sticky top-28 z-40">
         {!store.cid && (
-          <div className="min-w-fit mr-3 align-text-bottom mb-3 font-semibold">
-            Paste your IPFS CID:
-          </div>
+          // <div className="min-w-fit mr-3 align-text-bottom mb-3 font-semibold">
+          //   Paste your IPFS CID:
+          // </div>
+          <DopeAlter headText={'Paste your IPFS CID:'} color={'aqua'} />
         )}
         <div>
           <InputGroup

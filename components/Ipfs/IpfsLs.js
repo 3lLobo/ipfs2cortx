@@ -16,6 +16,7 @@ import { v4 as uuid } from 'uuid'
 import { IpfsCard } from './IpfsCard'
 import { BezierSpinner } from '../Spinner/BezierSpinner'
 import { resetFile } from '../../app/ipfsReduxSlice'
+import { DopeAlter } from '../Alert/dopeAlert'
 
 export default function IpfsLs() {
   const store = useSelector((state) => state.ipfsRedux)
@@ -38,10 +39,10 @@ export default function IpfsLs() {
       ) : (
         !isError && (
           <Box className="relative flex flex-col">
-            <div className={store.selectedIdx.length != 0 ? 'opacity-0' : ''}>
-              <p className="min-w-fit mr-3 align-text-bottom my-1 font-semibold text-center">
-                Select files to upload:
-              </p>
+            <div className='sticky top-36'>
+              {store.selectedIdx.length === 0 &&
+                <DopeAlter headText='Upload Data' bodyText='Select files for upload to Cortx.' color='aqua' />
+              }
             </div>
             <div className="flex sm:flex-col overflow-x-scroll scrollbar-hide z-20">
               {data.map((file, i) => {

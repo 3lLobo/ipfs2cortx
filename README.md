@@ -1,92 +1,188 @@
-### Cortx IPFS Bridge
+### IPFS 2 Cortx Bridge
 
-This web(3) app provides a bridge between IPFS with it's incentive-layer blockchain FileCoin and the massive-data storage system CORTX.
+This web(3) app provides a bridge between IPFS with it's incentive-layer blockchain FileCoin and the massive data-storage system CORTX.
 
-The user can download his files from IPFS using the CID and chose an existing bucket inside his Cotx cluster to upload it. The mayor contribution is to facilitate the file transfer as most IPFS and Cortx tools demand coding skills. This web/mobile app is available for everyone.  
+The underlying API and state-manager unifies interaction with the IPFS network and the S3 interface of a CORTX cluster.
+
+Once logged in, the user can download files from IPFS using the CID, then chose an existing bucket from the Cortx cluster and upload.
+The mayor contribution of this app is to facilitate the file transfer between IPFS and Cortx through a flexible yet stable API. Additional we provide a UI/UX to facilitate usability for the zero-coding target group. This app is inclusive, mobile and available for everyone.
 
 ![scr1](public/screenshots/sc1.png)
 ![scr2](public/screenshots/sc2.png)
 
 Main Features:
+
 - Inspect CID content if available ✅
-- fetch data from IPFS through it's CID ✅
-- deploy to CORTX file-system using S3 interface ✅
-- Mobile friendly ✅
-- List deployed files from CORTX file-system 📦
-- authenticate using FileCoin 📦
-- assign user-specific bucket 📦
-- invert bridge 📦
+- Fetch data from IPFS through the CID ✅
+- Deploy to CORTX file-system using the S3-interface ✅
+- List deployed files from CORTX file-system ✅
+- Mobile friendly interface ✅
+- Authenticate using FileCoin 📦
+- Cache user-specific S3-endpoint 📦
+- Invert bridge 📦
 
-[Live Demo](https://cortxportal.netlify.app/)
+Dynamicly hosted:
+[Netlify Demo](https://cortxportal.netlify.app/)
 
-Also static hosted on IPFS by Fleek:
+Static hosted on IPFS by Fleek:
 [InterPlanetary Demo](https://cortxbridge.on.fleek.co/)
 
-## Get Started 🚀
+## How-to use 🚀
 
-Spin up an IPFS deamon:
+To use the full functionality, the frontend requires a connection to both a CORTX cluster and an IPFS node. The later running on the same localhost.
+
+Follow these steps:
+
+- Download the [OVM image](https://github.com/Seagate/cortx/blob/main/doc/ova/2.0.0/PI-6/CORTX_on_Open_Virtual_Appliance_PI-6.rst)
+- Power it up as VM instance.
+- Set up the [S3-interface on your VM instance](https://github.com/Seagate/cortx/blob/main/doc/ova/2.0.0/PI-7/S3_IO_Operations.md)
+- Log in with root privileges
+
+Assuming the VM instance and your localhost are on the same network, get the local ip address of your OVM server:
+
+```bash
+hostname -I | awk '{print $1}'
+```
+
+This IP will serve as your endpoint.
+Next find the open HTTP port (`30518` on my machine) by running:
+
+```bash
+kubectl describe svc cortx-server-loadbal-svc-cortx-ova-rgw -n cortx |grep NodePort:
+```
+
+Now edit your `.env` file. Fill in the retrieved port and IP as endpoint
+
+Check if your instance time is aligned with the time on your localhost:
+
+```bash
+date -u
+```
+
+If not, reboot your OVM instance:
+
+```bash
+reboot now
+```
+
+check if the instance is ready to connect:
+
+```bash
+hctl status
+```
+
+Next on your localhost, inside the [root folder][./] install all dependencies and start the development server:
+
+```bash
+yarn && yarn dev
+```
+
+In a separate terminal, spin up an IPFS node:
 
 ```bash
 ipfs daemon
 ```
 
-Make sure your CORTX cluster is running and available. In case of [cloudshare](https://use.cloudshare.com/Authenticated/Landing.aspx?s=1), log in to your account.
+To interact with the frontend:
+
+- input CID in designated field
+- select/deselect file/s by clicking
+- select bucket if available
+- selected files are uploaded recursively
+
+Make sure your CORTX cluster is running and available. In case of [cloudshare](https://use.cloudshare.com/Authenticated/Landing.aspx?s=1), adjust the endpoint and make sure the port is open.
+
+## Architecture
+
+Mayor part of this repo contains frontend resources, yet the underlying Redux architecture can be used in any other `Node.Js` project.
+The Redux API and state manager is located in [/app](/app). It runs on the client-side and manages:
+
+- State of:
+  - IPFS:
+    - Current CID
+    - Files downloaded from IPFS
+    - User selection/deselection
+  - CORTX:
+    - Cluster connection
+    - Available buckets
+    - Files and size of selected bucket
+    - Upload status
+- API requests:
+  - S3 interaction:
+    - List buckets
+    - List files in bucket
+    - Upload a file to a bucket
+
+The API requests are forwarded to a ServerSide endpoint which is located in [/pages/api](/pages/api). The reason here fore is twofold:
+
+- the endpoint and login information stored as environment variables are not accessible to the client side.
+- The ServerSide endpoint can receive S3 responses without signed-header authentication, which would get blocked by most browsers CORS policy.
 
 ## Resources
 
+Links to resources which proves useful for the scope of this project:
+
+### JS tech-stack
+
+[CORTX](https://github.com/Seagate/cortx)
+
 [AWS for React](https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/getting-started-react-native.html)
 
-### Color palette
+[Redux toolkit](https://redux-toolkit.js.org/)
 
-Used the [IPFS color pallette](https://github.com/ipfs-shipyard/ipfs-css/blob/main/theme.json#L2).
+[Redux RTK](https://redux-toolkit.js.org/rtk-query/overview)
+
+### Design
+
+[IPFS color pallette](https://github.com/ipfs-shipyard/ipfs-css/blob/main/theme.json#L2)
+
+[CORTX branding](https://branding.seagate.com/documentpreview/b2b83d31-af68-4cd8-a6b0-3d226a92d609)
 
 [Tailwind animations](https://www.devwares.com/blog/create-animation-with-tailwind-css/)
 
 ## IPFS
 
-Two options available to fetch files over IPFS.
+This project offers two options for the IPFS client.
+The deployed version of this app uses a browser side IPFS client since not every user is expected to run a IPFS node. This option is slower and less stable.
+For localhost users a running IPFS daemon on port `:5001` is required.
 
-### Browser
-
-Starts an IPFS node inside the browser. This takes considerably longer than the second option. Further, the node is node not closed properly when closing the tap and might not clean up configuration files. File size might be limited by browser configurations.
-
-### HTTP client
-
-Connects to a running local IPFS node on port 5001. This option is faster, more stable and doens't limit file size. User must run a local instance of IPFS.
-
-To spin up an IPFS node on the browser, use the `create()` from ipfs-core.
-To connect to a running node on localhost, use the ipfs-http-client library like [here](https://github.com/ipfs/js-ipfs/tree/master/packages/ipfs-http-client)
-
-The browser extension can not be connected to as it runs in Braves native IPFS mode, which refuses API connections.
-Switching this to `local` will make it connectable.
+[IPFS client](https://github.com/ipfs/js-ipfs/tree/master/packages/ipfs-http-client)
 
 [IPFS hooks](https://github.com/ipfs-examples/js-ipfs-examples/blob/master/examples/browser-create-react-app/src/App.js)
 
-## AWS S3
+## S3
+
+Useful take-aways 🥡
 
 - bucket names must be lowercase.
-- CORS can be upadted with Callback
-- CORS policy should look like [this](https://docs.amazonaws.cn/en_us/AmazonS3/latest/userguide/ManageCorsUsing.html)
+- the clusters CORS policy can be upadted using Callbacks
+- CORS policy can be updated like this [this](https://docs.amazonaws.cn/en_us/AmazonS3/latest/userguide/ManageCorsUsing.html)
 
-**Update:**
+## Copy left & right ⬅️➡️
 
-CORSpolicy only concerns the incoming requests. There is no obvious way to have the bucket sign the the response with the incoming origin.
-That leaves us with the only option to go ServerSide, which also holds the benefit that it doesn't disclose the env variables to the browser.
+You know how it worqs: `Ctrl + c` and `Ctrl + v`.
 
-Instead of messing with CORS policy, we now try `getServerSideProps()` and as plan B set up a proxy-server API.
+Would be charming if you mention the source and give this repo a ⭐
 
-### OVM S3
+## Mobile View
+
+![M1](/public/screenshots/scMobile1.png)
+![M2](/public/screenshots/scMobile2.png)
+
+<!-- ### OVM S3
 
 Follow [these steps]() to init/test S3 on your VM.
 
 Get the local ip address of your OVM server:
+
 ```bash
 hostname -I | awk '{print $1}'
 ```
 
 Get the port to connect to:
+
 ```bash
 kubectl describe svc cortx-server-loadbal-svc-cortx-ova-rgw -n cortx |grep NodePort:
 ```
-My machine 30518 for http
 
+My machine 30518 for http -->
