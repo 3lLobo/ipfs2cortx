@@ -14,7 +14,7 @@ import { useEffect, useState } from 'react'
 import { IoSettings } from 'react-icons/io5'
 import { v4 as uuid } from 'uuid'
 import { BezierSpinner } from '../Spinner/BezierSpinner'
-import { selectFile, unselectFile } from '../../app/ipfsSlice'
+import { selectFile, unselectFile } from '../../app/ipfsReduxSlice'
 import prettyBytes from 'pretty-bytes'
 
 export const IpfsCard = ({ ls, idx }) => {
@@ -38,8 +38,10 @@ export const IpfsCard = ({ ls, idx }) => {
 
   useEffect(() => {
     if (result.isSuccess) {
-      dispatch(selectFile({ idx, file: result.data }))
-    } else if (result) {
+      const name = ls['name'] || 'ukwn' + uuid().toString()
+      dispatch(selectFile({ idx, file: result.data, name }))
+
+    } else if (result.isError) {
       console.log("🚀 ~ file: IpfsCard.js ~ line 43 ~ useEffect ~ result.isError", result.isError)
       toast('error', 'Failed to download file 😥', 'IpfsDownError')
     }
@@ -59,7 +61,7 @@ export const IpfsCard = ({ ls, idx }) => {
         onClick={onCardClick}
       >
         {result.isLoading && (
-          <div className="fixed z-20 justify-center ml-11">
+          <div className="fixed z-40 justify-center ml-11">
             <BezierSpinner
             // text={"DOWNLOADING..."}
             />
@@ -92,3 +94,7 @@ export const IpfsCard = ({ ls, idx }) => {
     </>
   )
 }
+console.log("🚀 ~ file: IpfsCard.js ~ line 95 ~ IpfsCard ~ 20", 20)
+console.log("🚀 ~ file: IpfsCard.js ~ line 95 ~ IpfsCard ~ 10", 10)
+console.log("🚀 ~ file: IpfsCard.js ~ line 95 ~ IpfsCard ~ 20", 20)
+console.log("🚀 ~ file: IpfsCard.js ~ line 95 ~ IpfsCard ~ 10", 10)

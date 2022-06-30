@@ -88,4 +88,5 @@ Get the port to connect to:
 ```bash
 kubectl describe svc cortx-server-loadbal-svc-cortx-ova-rgw -n cortx |grep NodePort:
 ```
+My machine 30518 for http
 

@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { setupListeners } from '@reduxjs/toolkit/dist/query'
 import { bridgeApi } from './bridgeApi'
-import ipfsReduxReducer from './ipfsSlice'
+import ipfsReduxReducer from './ipfsReduxSlice'
 import themeSliceReducer from './themeSlice'
 import cortxReducer from './cortxSlice'
 import { enableMapSet } from 'immer'

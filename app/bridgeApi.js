@@ -70,7 +70,7 @@ export const bridgeApi = createApi({
       query(body) {
 
         return {
-          url: 's3deployObjects',
+          url: 'api/s3deployObject',
           method: 'POST',
           headers: {
             "Content-Type": "application/json"

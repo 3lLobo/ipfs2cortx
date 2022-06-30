@@ -19,30 +19,34 @@ import { usePostFiles2BucketMutation } from '../../app/bridgeApi'
 
 export const BucketCard = ({ bucket, idx }) => {
   const store = useSelector((state) => state.cortx)
-  const ipfsStore = useSelector((state) => state.ipfs)
+  const ipfsStore = useSelector((state) => state.ipfsRedux)
   const dispatch = useDispatch()
   const toast = useMyToast()
   const [postFiles, result,] = usePostFiles2BucketMutation()
 
-  useEffect(() => {
-    // TODO: Logic to habdle upload success or error
-    console.log("Upload status: ", result)
-  })
-
+  // TODO: list files and size for each bucket
   const attrs = ['size', 'files']
   const spacing = 1
   // const bg = useColorModeValue('bg-lime-300 font-bold', 'ring-1 ring-slate-900 bg-lime-700 ')
 
-  function onCardClick() {
+  async function onCardClick() {
     dispatch(selectBucket({ bucket }))
     toast('info', 'Uploading Files to ' + bucket, 'infoBucket')
-    // TODO: upload logic
-    // for (obj of ipfsStore.selectedFiles) {
-    //   // TODO: send in batches
-    //   postFiles({ objName: obj., objData, bucketName: store.selectedBucket })
-    //   await!result.isLoading
-    // })
+    for (let i = 0; i < ipfsStore?.selectedFiles.length; i++) {
+      // TODO: send in batches
+      const objName = ipfsStore.selectedName[i]
+      // TODO: make reducer with status toast
+      postFiles({ objName, objData: ipfsStore.selectedFiles[i], bucketName: bucket })
+    }
   }
+
+  useEffect(() => {
+    if (result.isSuccess) {
+      toast('success', 'Uploaded File to ' + bucket, 'infoBucket 🎉')
+    } else if (result.isError) {
+      toast('error', 'File could not be uploaded to ' + bucket, ' ☠️')
+    }
+  }, [result, toast, bucket])
 
   const hoverStyle =
     store.selectedBucket === bucket ? ' sm:translate-x-3 ' : ' sm:hover:translate-x-3 '

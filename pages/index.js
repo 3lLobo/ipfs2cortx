@@ -3,15 +3,15 @@
 import HomeWrapper from '../components/layout'
 import { useEffect, useState } from 'react'
 import { IpfsBox } from '../components/Ipfs/IpfsBox'
-import { S3Box } from '../components/Aws/S3box'
-// import { S3React } from '../components/Aws/S3React'
+import { S3Box } from '../components/Cortx/S3box'
+// import { S3React } from '../components/Cortx/S3React'
 import IpfsInput from '../components/Ipfs/IpfsInput'
 import IpfsLs from '../components/Ipfs/IpfsLs'
 
 import { useSelector, useDispatch } from 'react-redux'
 import useMyToast from '../hooks/useMyToast'
 import { createS3, listBucket } from '../lib/s3Util'
-import { CortxBuckets } from '../components/Aws/CortxBuckets'
+import { CortxBuckets } from '../components/Cortx/CortxBuckets'
 import { BezierSpinner } from '../components/Spinner/BezierSpinner'
 import { selectBucket, reset } from '../app/cortxSlice'
 

@@ -5,21 +5,24 @@ import { Button, Image, useColorModeValue } from '@chakra-ui/react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLazySayHiJonQuery, useGetBucketsQuery } from '../../app/bridgeApi'
 import { useEffect } from 'react'
+import { listBuckets } from '../../app/cortxSlice'
 
 
 
 export function CortxBuckets({ }) {
   const ipfsStore = useSelector((state) => state.ipfsRedux)
   const logoPath = useColorModeValue('/CORTX-Logo-BLK.png', '/CORTX-Logo-WHT.png')
-  const buckets = ['ipfs', 'imaginary', 'planetary']
+  // const buckets = ['ipfs', 'imaginary', 'planetary']
 
   const store = useSelector((state) => state.cortx)
   const dispatch = useDispatch()
   const { data, error, isLoading } = useGetBucketsQuery()
 
   useEffect(() => {
-    // TODO: logic to list all buckets
-    console.log("s3 Bucket data: ", data)
+    if (data) {
+      const buckets = data?.buckets?.Buckets?.map((bckt) => bckt.Name)
+      dispatch(listBuckets({ buckets }))
+    }
   }, [data])
 
   return (
@@ -39,9 +42,18 @@ export function CortxBuckets({ }) {
           <p className="text-sm ">Select a bucket to upload your IPFS files.</p>
         </div>
         <div className="flex sm:flex-col overflow-x-scroll z-50 scrollbar-hide">
-          {buckets.map((bucket, i) => {
-            return <BucketCard bucket={bucket} idx={1} key={uuid()} />
-          })}
+          {(store.buckets?.length > 0)
+            ? store.buckets.map((bucket, i) => {
+              return <BucketCard bucket={bucket} idx={1} key={uuid()} />
+            })
+            : isLoading
+              ? <BezierSpinner />
+              : <div
+                className='mx-auto'
+              >
+                No Buckets ☠️
+              </div>
+          }
         </div>
       </div>
     </div>

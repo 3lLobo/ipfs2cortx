@@ -15,7 +15,7 @@ import { IoSettings } from 'react-icons/io5'
 import { v4 as uuid } from 'uuid'
 import { IpfsCard } from './IpfsCard'
 import { BezierSpinner } from '../Spinner/BezierSpinner'
-import { resetFile } from '../../app/ipfsSlice'
+import { resetFile } from '../../app/ipfsReduxSlice'
 
 export default function IpfsLs() {
   const store = useSelector((state) => state.ipfsRedux)

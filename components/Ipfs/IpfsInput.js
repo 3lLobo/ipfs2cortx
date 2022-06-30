@@ -11,7 +11,7 @@ import {
 } from '@chakra-ui/react'
 import { useSelector, useDispatch } from 'react-redux'
 import useMyToast from '../../hooks/useMyToast'
-import { reset, setCid } from '../../app/ipfsSlice'
+import { reset, setCid } from '../../app/ipfsReduxSlice'
 import isIpfs from 'is-ipfs'
 
 
