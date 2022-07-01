@@ -1,5 +1,8 @@
 ### IPFS 2 Cortx Bridge
 
+<a href="https://wakatime.com/badge/user/7a513365-0545-491c-84a3-bf3da983924a/project/f09f028f-37a9-40b2-a01f-d17e1849bce3"><img src="https://wakatime.com/badge/user/7a513365-0545-491c-84a3-bf3da983924a/project/f09f028f-37a9-40b2-a01f-d17e1849bce3.svg" alt="wakatime"></a>
+
+
 This web(3) app provides a bridge between IPFS with it's incentive-layer blockchain FileCoin and the massive data-storage system CORTX.
 
 The underlying API and state-manager unifies interaction with the IPFS network and the S3 interface of a CORTX cluster.
