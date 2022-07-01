@@ -7,8 +7,8 @@ The underlying API and state-manager unifies interaction with the IPFS network a
 Once logged in, the user can download files from IPFS using the CID, then chose an existing bucket from the Cortx cluster and upload.
 The mayor contribution of this app is to facilitate the file transfer between IPFS and Cortx through a flexible yet stable API. Additional we provide a UI/UX to facilitate usability for the zero-coding target group. This app is inclusive, mobile and available for everyone.
 
-![scr1](public/screenshots/sc1.png)
-![scr2](public/screenshots/sc2.png)
+![scr1](./public/screenshots/sc1.png)
+![scr2](./public/screenshots/sc2.png)
 
 Main Features:
 
@@ -21,15 +21,16 @@ Main Features:
 - Cache user-specific S3-endpoint 📦
 - Invert bridge 📦
 
-Dynamicly hosted:
+Dynamically hosted:
 [Netlify Demo](https://cortxportal.netlify.app/)
 
 Static hosted on IPFS by Fleek:
 [InterPlanetary Demo](https://cortxbridge.on.fleek.co/)
 
+*These demos use a mock-ip server response as they are not connected to a CORTX cluster.*
 ## How-to use 🚀
 
-To use the full functionality, the frontend requires a connection to both a CORTX cluster and an IPFS node. The later running on the same localhost.
+To njoy the full functionality, the frontend requires a connection to both a CORTX cluster and an IPFS node. The latter running on the same localhost.
 
 Follow these steps:
 
@@ -95,7 +96,7 @@ Make sure your CORTX cluster is running and available. In case of [cloudshare](h
 ## Architecture
 
 Mayor part of this repo contains frontend resources, yet the underlying Redux architecture can be used in any other `Node.Js` project.
-The Redux API and state manager is located in [/app](/app). It runs on the client-side and manages:
+The Redux API and state manager is located in [/app](./app). It runs on the client-side and manages:
 
 - State of:
   - IPFS:
@@ -113,14 +114,14 @@ The Redux API and state manager is located in [/app](/app). It runs on the clien
     - List files in bucket
     - Upload a file to a bucket
 
-The API requests are forwarded to a ServerSide endpoint which is located in [/pages/api](/pages/api). The reason here fore is twofold:
+The API requests are forwarded to a ServerSide endpoint which is located in [/pages/api](./pages/api). The reason herefore is twofold:
 
 - the endpoint and login information stored as environment variables are not accessible to the client side.
 - The ServerSide endpoint can receive S3 responses without signed-header authentication, which would get blocked by most browsers CORS policy.
 
 ## Resources
 
-Links to resources which proves useful for the scope of this project:
+Links to resources which proved useful for the scope of this project:
 
 ### JS tech-stack
 
@@ -144,7 +145,7 @@ Links to resources which proves useful for the scope of this project:
 
 This project offers two options for the IPFS client.
 The deployed version of this app uses a browser side IPFS client since not every user is expected to run a IPFS node. This option is slower and less stable.
-For localhost users a running IPFS daemon on port `:5001` is required.
+For localhost users, a running IPFS daemon on port `:5001` is a requirement.
 
 [IPFS client](https://github.com/ipfs/js-ipfs/tree/master/packages/ipfs-http-client)
 
@@ -155,8 +156,8 @@ For localhost users a running IPFS daemon on port `:5001` is required.
 Useful take-aways 🥡
 
 - bucket names must be lowercase.
-- the clusters CORS policy can be upadted using Callbacks
-- CORS policy can be updated like this [this](https://docs.amazonaws.cn/en_us/AmazonS3/latest/userguide/ManageCorsUsing.html)
+- the clusters CORS policy can be updated using Callbacks
+- CORS policy can be updated like [this](https://docs.amazonaws.cn/en_us/AmazonS3/latest/userguide/ManageCorsUsing.html)
 
 ## Copy left & right ⬅️➡️
 
@@ -166,8 +167,8 @@ Would be charming if you mention the source and give this repo a ⭐
 
 ## Mobile View
 
-![M1](/public/screenshots/scMobile1.png)
-![M2](/public/screenshots/scMobile2.png)
+![M1](./public/screenshots/scMobile1.png)
+![M2](./public/screenshots/scMobile2.png)
 
 <!-- ### OVM S3
 
