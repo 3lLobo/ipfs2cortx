@@ -40,9 +40,8 @@ export const IpfsCard = ({ ls, idx }) => {
     if (result.isSuccess) {
       const name = ls['name'] || 'ukwn' + uuid().toString()
       dispatch(selectFile({ idx, file: result.data, name }))
-
     } else if (result.isError) {
-      console.log("🚀 ~ file: IpfsCard.js ~ line 43 ~ useEffect ~ result.isError", result.isError)
+      console.log('🚀 ~ file: IpfsCard.js ~ line 43 ~ useEffect ~ result.isError', result.isError)
       toast('error', 'Failed to download file 😥', 'IpfsDownError')
     }
   }, [result, dispatch, ls, toast, idx])
@@ -94,7 +93,7 @@ export const IpfsCard = ({ ls, idx }) => {
     </>
   )
 }
-console.log("🚀 ~ file: IpfsCard.js ~ line 95 ~ IpfsCard ~ 20", 20)
-console.log("🚀 ~ file: IpfsCard.js ~ line 95 ~ IpfsCard ~ 10", 10)
-console.log("🚀 ~ file: IpfsCard.js ~ line 95 ~ IpfsCard ~ 20", 20)
-console.log("🚀 ~ file: IpfsCard.js ~ line 95 ~ IpfsCard ~ 10", 10)
+console.log('🚀 ~ file: IpfsCard.js ~ line 95 ~ IpfsCard ~ 20', 20)
+console.log('🚀 ~ file: IpfsCard.js ~ line 95 ~ IpfsCard ~ 10', 10)
+console.log('🚀 ~ file: IpfsCard.js ~ line 95 ~ IpfsCard ~ 20', 20)
+console.log('🚀 ~ file: IpfsCard.js ~ line 95 ~ IpfsCard ~ 10', 10)

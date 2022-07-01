@@ -39,10 +39,14 @@ export default function IpfsLs() {
       ) : (
         !isError && (
           <Box className="relative flex flex-col">
-            <div className='sticky top-36'>
-              {store.selectedIdx.length === 0 &&
-                <DopeAlter headText='Upload Data' bodyText='Select files for upload to Cortx.' color='aqua' />
-              }
+            <div className="sticky top-36">
+              {store.selectedIdx.length === 0 && (
+                <DopeAlter
+                  headText="Upload Data"
+                  bodyText="Select files for upload to Cortx."
+                  color="aqua"
+                />
+              )}
             </div>
             <div className="flex sm:flex-col overflow-x-scroll scrollbar-hide z-20">
               {data.map((file, i) => {

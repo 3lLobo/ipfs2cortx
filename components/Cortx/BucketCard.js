@@ -16,13 +16,12 @@ import { v4 as uuid } from 'uuid'
 import { selectBucket, useLazyDeploy } from '../../app/cortxSlice'
 import { usePostFiles2BucketMutation, useGetBucketFilesQuery } from '../../app/bridgeApi'
 
-
 export const BucketCard = ({ bucket, idx }) => {
   const store = useSelector((state) => state.cortx)
   const ipfsStore = useSelector((state) => state.ipfsRedux)
   const dispatch = useDispatch()
   const toast = useMyToast()
-  const [postFiles, result,] = usePostFiles2BucketMutation()
+  const [postFiles, result] = usePostFiles2BucketMutation()
 
   // TODO: list files and size for each bucket
   const attrs = ['size', 'files']
@@ -68,8 +67,7 @@ export const BucketCard = ({ bucket, idx }) => {
       setBucketSize(() => prettyBytes(totalSize))
       setNFiles(() => nFiles)
     }
-  }, [bucketFiles,])
-
+  }, [bucketFiles])
 
   return (
     <>
@@ -84,9 +82,7 @@ export const BucketCard = ({ bucket, idx }) => {
             {bucket}
           </h4>
         </Box>
-        <div
-          className={' text-right flex flex-row z-10 overflow-scroll scrollbar-hide mr-0 pr-3'}
-        >
+        <div className={' text-right flex flex-row z-10 overflow-scroll scrollbar-hide mr-0 pr-3'}>
           <List className="w-11 pl-0 mr-0">
             {attrs.map((attr, i) => {
               return (
@@ -98,7 +94,6 @@ export const BucketCard = ({ bucket, idx }) => {
             })}
           </List>
           <div className="mr-0">
-
             <List className="">
               {attrs.map((attr, i) => {
                 return (

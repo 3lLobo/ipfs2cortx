@@ -1,8 +1,6 @@
 import { createApi, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react'
 import all from 'it-all'
-import { listObjects } from '../lib/s3Util'
 import qs from 'qs'
-
 
 export const bridgeApi = createApi({
   reducerPath: 'bridgeApi',
@@ -43,42 +41,41 @@ export const bridgeApi = createApi({
     getBuckets: build.query({
       query: (args) => {
         return `api/s3listBuckets`
-      }
+      },
     }),
     getBucketFiles: build.query({
       query: (args) => {
-        const query = qs.stringify(args);
+        const query = qs.stringify(args)
         return `api/s3listObjects?${query}`
-      }
+      },
     }),
     postFiles2Bucket: build.mutation({
       query(body) {
-
         return {
           url: 'api/s3deployObject',
           method: 'POST',
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json',
           },
           body: body,
         }
-      }
+      },
     }),
     sayHiJon: build.query({
       query: (args) => {
-        const query = qs.stringify(args);
+        const query = qs.stringify(args)
         return `api/hello`
-      }
-    })
+      },
+    }),
   }),
 })
 
-export const { 
-  useLsCidQuery, 
-  useGetCidQuery, 
-  useLazyGetCidQuery, 
-  useGetBucketsQuery, 
-  useLazyGetBucketFilesQuery, 
-  usePostFiles2BucketMutation, 
-  useGetBucketFilesQuery, 
+export const {
+  useLsCidQuery,
+  useGetCidQuery,
+  useLazyGetCidQuery,
+  useGetBucketsQuery,
+  useLazyGetBucketFilesQuery,
+  usePostFiles2BucketMutation,
+  useGetBucketFilesQuery,
 } = bridgeApi

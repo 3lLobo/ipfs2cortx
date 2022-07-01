@@ -7,9 +7,7 @@ import { useLazySayHiJonQuery, useGetBucketsQuery } from '../../app/bridgeApi'
 import { useEffect } from 'react'
 import { listBuckets } from '../../app/cortxSlice'
 
-
-
-export function CortxBuckets({ }) {
+export function CortxBuckets({}) {
   const ipfsStore = useSelector((state) => state.ipfsRedux)
   const logoPath = useColorModeValue('/CORTX-Logo-BLK.png', '/CORTX-Logo-WHT.png')
   // const buckets = ['ipfs', 'imaginary', 'planetary']
@@ -27,9 +25,7 @@ export function CortxBuckets({ }) {
 
   return (
     <div className="max-w-full sm:max-w-sm items-center">
-      <div
-        className="flex flex-shrink items-center text-white mx-auto sm:mx-5 opacity-70 sm:my-6 "
-      >
+      <div className="flex flex-shrink items-center text-white mx-auto sm:mx-5 opacity-70 sm:my-6 ">
         {/* <Image width='11' src={logoPath} alt='cortxLogo' */}
         <Image src={'cortx_image.png'} alt="cortxLogo" className="sm:absolute w-40 sm:w-fit" />
       </div>
@@ -42,18 +38,19 @@ export function CortxBuckets({ }) {
           <p className="text-sm ">Select a bucket to upload your IPFS files.</p>
         </div>
         <div className="flex sm:flex-col overflow-x-scroll z-50 scrollbar-hide">
-          {(store.buckets?.length > 0)
-            ? store.buckets.map((bucket, i) => {
+          {store.buckets?.length > 0 ? (
+            store.buckets.map((bucket, i) => {
               return <BucketCard bucket={bucket} idx={1} key={uuid()} />
             })
-            : isLoading
-              ? <BezierSpinner />
-              : <div
-                className='mx-auto' //  TODO:animate bounce'
-              >
-                No Buckets ☠️
-              </div>
-          }
+          ) : isLoading ? (
+            <BezierSpinner />
+          ) : (
+            <div
+              className="mx-auto" //  TODO:animate bounce'
+            >
+              No Buckets ☠️
+            </div>
+          )}
         </div>
       </div>
     </div>

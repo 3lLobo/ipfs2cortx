@@ -1,6 +1,6 @@
 
 // Response from /lib/cortx-s3.js
-const s3Res = [
+
   // Creating a bucket...
   {},
   // Listing buckets...
@@ -50,4 +50,4 @@ const s3Res = [
     MaxKeys: 1000,
     CommonPrefixes: []
   }
-]
+

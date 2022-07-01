@@ -27,7 +27,8 @@ Dynamically hosted:
 Static hosted on IPFS by Fleek:
 [InterPlanetary Demo](https://cortxbridge.on.fleek.co/)
 
-*These demos use a mock-ip server response as they are not connected to a CORTX cluster.*
+_These demos use a mock-ip server response as they are not connected to a CORTX cluster._
+
 ## How-to use 🚀
 
 To njoy the full functionality, the frontend requires a connection to both a CORTX cluster and an IPFS node. The latter running on the same localhost.

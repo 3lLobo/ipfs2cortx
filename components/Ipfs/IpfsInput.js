@@ -15,7 +15,6 @@ import { reset, setCid } from '../../app/ipfsReduxSlice'
 import isIpfs from 'is-ipfs'
 import { DopeAlter } from '../Alert/dopeAlert'
 
-
 export default function IpfsInput() {
   const store = useSelector((state) => state.ipfsRedux)
   const toast = useMyToast()
