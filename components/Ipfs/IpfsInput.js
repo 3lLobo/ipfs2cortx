@@ -39,7 +39,7 @@ export default function IpfsInput() {
       <Box className="m-3 sticky top-28 z-40">
         <AnimatePresence>
           <motion.div
-            initial={false}
+            initial={{ opacity: 1}}
             animate={!store.cid ? 'visible' : 'hidden'}
             exit={{ opacity: 0 }}
             transition={{ ease: "easeInOut", duration: .5 }}
