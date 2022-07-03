@@ -17,7 +17,7 @@ import { IpfsCard } from './IpfsCard'
 import { BezierSpinner } from '../Spinner/BezierSpinner'
 import { reset } from '../../app/ipfsReduxSlice'
 import { DopeAlter } from '../Alert/dopeAlert'
-import { motion, AnimatePresence, useAnimation } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function IpfsLs() {
   const store = useSelector((state) => state.ipfsRedux)
@@ -26,7 +26,7 @@ export default function IpfsLs() {
   const { data, error, isLoading, isError } = useLsCidQuery({ cid: store.cid })
 
   useEffect(() => {
-    if (isError) {
+    if (store.cid && isError) {
       toast('error', 'No files found related to this CID 💔', 'ipfsCidError')
       console.log('🚀 ~ file: IpfsLs.js ~ line 11 ~ IpfsLs ~ error', error)
       dispatch(reset)
@@ -51,13 +51,12 @@ export default function IpfsLs() {
           ) : data && (
             <Box className="relative flex flex-col">
               <div className="sticky top-36">
-                {store.selectedIdx.length === 0 && (
                   <DopeAlter
                     headText="Upload Data"
                     bodyText="Select files for upload to Cortx."
                     color="aqua"
+                    show={store.selectedIdx.length === 0} 
                   />
-                )}
               </div>
               <div
                 className="flex sm:flex-col overflow-x-scroll scrollbar-hide z-20"

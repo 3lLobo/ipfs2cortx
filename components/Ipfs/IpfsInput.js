@@ -37,28 +37,13 @@ export default function IpfsInput() {
   return (
     <>
       <Box className="m-3 sticky top-28 z-40">
-        <AnimatePresence>
-          <motion.div
-            initial={{ opacity: 1}}
-            animate={!store.cid ? 'visible' : 'hidden'}
-            exit={{ opacity: 0 }}
-            transition={{ ease: "easeInOut", duration: .5 }}
-            variants={{
-              visible: { opacity: 1, x: 0 },
-              hidden: { opacity: 0, x: -300 },
-            }}
-          >
-            <DopeAlter headText={'Paste your IPFS CID:'} color={'aqua'} />
-          </motion.div>
-        </AnimatePresence>
+        <DopeAlter headText={'Paste your IPFS CID:'} color={'aqua'} show={!store.cid} />
         <div>
           <InputGroup
             h="7"
-          // className=' fill-charcoal bg-opacity-50'
           >
             <InputLeftElement
               h="7"
-            // className='opacity-100'
             >
               <Image alt="ipfsSmallBox" src="/ipfs-logo.svg" h={41} />
             </InputLeftElement>
