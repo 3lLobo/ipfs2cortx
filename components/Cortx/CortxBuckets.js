@@ -12,18 +12,21 @@ import { motion, AnimatePresence } from 'framer-motion'
 export function CortxBuckets({ }) {
   const ipfsStore = useSelector((state) => state.ipfsRedux)
   const logoPath = useColorModeValue('/CORTX-Logo-BLK.png', '/CORTX-Logo-WHT.png')
-  // const buckets = ['ipfs', 'imaginary', 'planetary']
 
   const store = useSelector((state) => state.cortx)
   const dispatch = useDispatch()
-  const { data, error, isLoading } = useGetBucketsQuery()
+  const { data, error, isLoading, isError } = useGetBucketsQuery()
 
   useEffect(() => {
     if (data) {
       const buckets = data?.buckets?.Buckets?.map((bckt) => bckt.Name)
       dispatch(listBuckets({ buckets }))
+    } else if (isLoading) {
+      // for demo purposes
+      const buckets = ['ipfs', 'imaginary', 'planetary']
+      dispatch(listBuckets({ buckets }))
     }
-  }, [data])
+  }, [data, isLoading])
 
   return (
     <div className="max-w-full sm:max-w-sm items-center">
