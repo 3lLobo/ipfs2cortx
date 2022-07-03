@@ -18,59 +18,62 @@ import { BezierSpinner } from '../Spinner/BezierSpinner'
 import { reset } from '../../app/ipfsReduxSlice'
 import { DopeAlter } from '../Alert/dopeAlert'
 import { motion, AnimatePresence } from 'framer-motion'
+import { skipToken } from '@reduxjs/toolkit/dist/query'
 
 export default function IpfsLs() {
   const store = useSelector((state) => state.ipfsRedux)
   const dispatch = useDispatch()
   const toast = useMyToast()
-  const { data, error, isLoading, isError } = useLsCidQuery({ cid: store.cid })
+  const { currentData, data, error, isLoading, isError } = useLsCidQuery({ cid: store.cid ? store.cid : skipToken })
 
   useEffect(() => {
     if (store.cid && isError) {
       toast('error', 'No files found related to this CID 💔', 'ipfsCidError')
       console.log('🚀 ~ file: IpfsLs.js ~ line 11 ~ IpfsLs ~ error', error)
-      dispatch(reset)
+      dispatch(reset())
     }
-  }, [isError, dispatch, toast, error])
+    console.log(store.cid)
+  }, [isError, dispatch, toast, error, store.cid])
 
   return (
     <Box className="">
-      <AnimatePresence>
-        <motion.div
-          initial={false}
-          animate={store.cid ? 'visible' : 'hidden'}
-          exit={{ opacity: 0 }}
-          transition={{ ease: "easeInOut", duration: .5 }}
-          variants={{
-            visible: { opacity: 1, y: 0 },
-            hidden: { opacity: 0, y: 500 },
-          }}
-        >
-          {isLoading ? (
-            <BezierSpinner></BezierSpinner>
-          ) : data && (
+      {isLoading ? (
+        <BezierSpinner></BezierSpinner>
+      ) : (
+        <AnimatePresence>
+          <motion.div
+            initial={false}
+            animate={(currentData && store.cid) ? 'visible' : 'hidden'}
+            exit={{ opacity: 0 }}
+            transition={{ ease: "easeInOut", duration: .5 }}
+            variants={{
+              visible: { opacity: 1, y: 0 },
+              hidden: { opacity: 0, y: 500 },
+            }}
+          >
             <Box className="relative flex flex-col">
-              <div className="sticky top-36">
-                  <DopeAlter
-                    headText="Upload Data"
-                    bodyText="Select files for upload to Cortx."
-                    color="aqua"
-                    show={store.selectedIdx.length === 0} 
-                  />
+              <div className="sticky top-52">
+                <DopeAlter
+                  headText="Upload Data"
+                  bodyText="Select files for upload to Cortx."
+                  color="aqua"
+                  show={store.selectedIdx.length === 0 && store.cid}
+                />
               </div>
               <div
                 className="flex sm:flex-col overflow-x-scroll scrollbar-hide z-20"
               >
-                {data.map((file, i) => {
+                {data?.map((file, i) => {
                   return (
                     <IpfsCard ls={file} idx={i} key={uuid()} />
                   )
                 })}
               </div>
             </Box>
-          )}
-        </motion.div>
-      </AnimatePresence>
-    </Box>
+          </motion.div>
+        </AnimatePresence>
+      )
+      }
+    </Box >
   )
 }

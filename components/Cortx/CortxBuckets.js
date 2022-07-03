@@ -7,13 +7,13 @@ import { useLazySayHiJonQuery, useGetBucketsQuery } from '../../app/bridgeApi'
 import { useEffect } from 'react'
 import { listBuckets } from '../../app/cortxSlice'
 import { motion, AnimatePresence } from 'framer-motion'
+import useMyToast from '../../hooks/useMyToast'
 
 
 export function CortxBuckets({ }) {
-  const ipfsStore = useSelector((state) => state.ipfsRedux)
-  const logoPath = useColorModeValue('/CORTX-Logo-BLK.png', '/CORTX-Logo-WHT.png')
-
   const store = useSelector((state) => state.cortx)
+  const ipfsStore = useSelector((state) => state.ipfsRedux)
+  const toast = useMyToast()
   const dispatch = useDispatch()
   const { data, error, isLoading, isError } = useGetBucketsQuery()
 
@@ -23,10 +23,17 @@ export function CortxBuckets({ }) {
       dispatch(listBuckets({ buckets }))
     } else if (isLoading) {
       // for demo purposes
-      const buckets = ['ipfs', 'imaginary', 'planetary']
-      dispatch(listBuckets({ buckets }))
+      setTimeout(() => {
+        if (store.buckets?.length > 0) {
+          return
+        } else {
+          const buckets = ['ipfs', 'imaginary', 'planetary']
+          dispatch(listBuckets({ buckets }))
+          toast('info', `Cluster unavailable! Using mock-up buckets for demonstration purposes.`, 'mockupInfo')
+        }
+      }, "11000")
     }
-  }, [data, isLoading])
+  }, [data, isLoading, dispatch, toast, store])
 
   return (
     <div className="max-w-full sm:max-w-sm items-center">

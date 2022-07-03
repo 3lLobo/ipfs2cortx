@@ -51,7 +51,7 @@ export default function IpfsInput() {
               h="7"
               rounded="xl"
               // fontWeight="black"
-              onChange={handleInput}
+              onChange={(e)=> handleInput(e)}
               placeholder={store.cid || '<myCID>'}
               size="xs"
               variant="outline"
