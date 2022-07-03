@@ -14,6 +14,9 @@ import useMyToast from '../../hooks/useMyToast'
 import { reset, setCid } from '../../app/ipfsReduxSlice'
 import isIpfs from 'is-ipfs'
 import { DopeAlter } from '../Alert/dopeAlert'
+import { motion, AnimatePresence } from 'framer-motion'
+
+
 
 export default function IpfsInput() {
   const store = useSelector((state) => state.ipfsRedux)
@@ -34,20 +37,28 @@ export default function IpfsInput() {
   return (
     <>
       <Box className="m-3 sticky top-28 z-40">
-        {!store.cid && (
-          // <div className="min-w-fit mr-3 align-text-bottom mb-3 font-semibold">
-          //   Paste your IPFS CID:
-          // </div>
-          <DopeAlter headText={'Paste your IPFS CID:'} color={'aqua'} />
-        )}
+        <AnimatePresence>
+          <motion.div
+            initial={false}
+            animate={!store.cid ? 'visible' : 'hidden'}
+            exit={{ opacity: 0 }}
+            transition={{ ease: "easeInOut", duration: .5 }}
+            variants={{
+              visible: { opacity: 1, x: 0 },
+              hidden: { opacity: 0, x: -300 },
+            }}
+          >
+            <DopeAlter headText={'Paste your IPFS CID:'} color={'aqua'} />
+          </motion.div>
+        </AnimatePresence>
         <div>
           <InputGroup
             h="7"
-            // className=' fill-charcoal bg-opacity-50'
+          // className=' fill-charcoal bg-opacity-50'
           >
             <InputLeftElement
               h="7"
-              // className='opacity-100'
+            // className='opacity-100'
             >
               <Image alt="ipfsSmallBox" src="/ipfs-logo.svg" h={41} />
             </InputLeftElement>
